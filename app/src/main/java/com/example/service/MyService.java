@@ -36,7 +36,9 @@ public class MyService extends Service {
 
         return Log.d("NextSong","Next Song Played");
     }
-};
+
+
+    };
     @Override
     public IBinder onBind(Intent intent) {
        return stub;
