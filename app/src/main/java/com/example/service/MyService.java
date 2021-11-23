@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
 import SepratePackage.aidlInterface;
 
-public class MyService extends Service implements MediaPlayer.OnPreparedListener {
+public class MyService extends Service  {
     public MyService() {
     }
 
@@ -39,11 +41,11 @@ MediaPlayer mediaPlayer = null;
 //                mediaPlayer.start();
 //                Log.d("CurrentSong","Current Song Played");
 //            }else {}
-              return   Log.d("CurrentSong","Current Song Played");
+//      //  return   Log.d("CurrentSong","Current Song Played");
 ////        Intent intent
 ////        if ()
 //mediaPlayer.pause();
-       //  return    Log.d("PauseSong","Current Song Paused");
+        return    Log.d("PauseSong","Current Song Paused");
             //return 0;
         }
 
@@ -53,17 +55,33 @@ MediaPlayer mediaPlayer = null;
         return Log.d("NextSong","Next Song Played");
     }
 
+        @Override
+        public int notifysonginfo(String name) throws RemoteException {
+            return Log.d("NotifySong","Current Song Notified");
+        }
+
 
     };
     @Override
     public IBinder onBind(Intent intent) {
-
-
        return stub;
     }
 
-    @Override
-    public void onPrepared(MediaPlayer mp) {
+    Parcelable.ClassLoaderCreator classLoaderCreator = new Parcelable.ClassLoaderCreator() {
+        @Override
+        public Object createFromParcel(Parcel source, ClassLoader loader) {
+            return TrackInfo.PARCELABLE_WRITE_RETURN_VALUE;
+        }
 
-    }
+        @Override
+        public Object createFromParcel(Parcel source) {
+            return null;
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new Object[0];
+
+        }
+    };
 }

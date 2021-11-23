@@ -11,6 +11,7 @@ interface aidlInterface {
    int PerformPreviousPlay();
    int PerformCurrentPlay();
    int PerformNextPlay();
+   int notifysonginfo(String name);
 
 
 }
