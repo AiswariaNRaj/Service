@@ -9,7 +9,6 @@ public class TrackInfo implements Parcelable {
     private String ArtistName;
     private String AlbumName;
 
-
     public TrackInfo(String songUrl, String songName, String artistName, String albumName) {
         SongUrl = songUrl;
         SongName = songName;
@@ -17,13 +16,12 @@ public class TrackInfo implements Parcelable {
         AlbumName = albumName;
     }
 
-
     public String getSongUrl() {
         return SongUrl;
     }
 
     public void setSongUrl(String songUrl) {
-        SongUrl = songUrl;
+        this.SongUrl = songUrl;
     }
 
     public String getSongName() {
@@ -86,4 +84,6 @@ public class TrackInfo implements Parcelable {
                 this.SongUrl,this.SongName,this.ArtistName,this.AlbumName
         });
     }
+
+
 }
