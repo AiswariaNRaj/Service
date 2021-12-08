@@ -22,12 +22,13 @@ public class MyService extends Service {
 
         @Override
         public int PerformPreviousPlay() throws RemoteException {
+
             return  Log.d("PreviousSong","Previous Song Played");
         }
 
         @Override
         public int PerformCurrentPlay() throws RemoteException {
-            return 0;
+              return  Log.d("PreviousSong","Previous Song Played");
         }
 
         @Override
