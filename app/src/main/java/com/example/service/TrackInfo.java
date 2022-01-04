@@ -3,87 +3,56 @@ package com.example.service;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TrackInfo implements Parcelable {
-    private String SongUrl;
-    private String SongName;
-    private String ArtistName;
-    private String AlbumName;
+public class TrackInfo {
+    private String path, title, artist,album, duration;
 
-    public TrackInfo(String songUrl, String songName, String artistName, String albumName) {
-        SongUrl = songUrl;
-        SongName = songName;
-        ArtistName = artistName;
-        AlbumName = albumName;
+    public TrackInfo(String path, String title, String artist, String album, String duration) {
+        this.path = path;
+        this.title = title;
+        this.artist = artist;
+        this.album = album;
+        this.duration = duration;
+    }
+    public TrackInfo() {
     }
 
-    public String getSongUrl() {
-        return SongUrl;
+    public String getPath() {
+        return path;
     }
 
-    public void setSongUrl(String songUrl) {
-        this.SongUrl = songUrl;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getSongName() {
-        return SongName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSongName(String songName) {
-        SongName = songName;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getArtistName() {
-        return ArtistName;
+    public String getArtist() {
+        return artist;
     }
 
-    public void setArtistName(String artistName) {
-        ArtistName = artistName;
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
-    public String getAlbumName() {
-        return AlbumName;
+    public String getAlbum() {
+        return album;
     }
 
-    public void setAlbumName(String albumName) {
-        AlbumName = albumName;
-    }
-
-    public static Creator<TrackInfo> getCREATOR() {
-        return CREATOR;
-    }
-
-    protected TrackInfo(Parcel in) {
-
-        String[] data = new String[4];
-        this.SongUrl = data[0];
-        this.SongName = data[1];
-        this.ArtistName = data[2];
-        this.AlbumName = data[3];
-    }
-
-    public static final Creator<TrackInfo> CREATOR = new Creator<TrackInfo>() {
-        @Override
-        public TrackInfo createFromParcel(Parcel in) {
-            return new TrackInfo(in);
-        }
-
-        @Override
-        public TrackInfo[] newArray(int size) {
-            return new TrackInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{
-                this.SongUrl,this.SongName,this.ArtistName,this.AlbumName
-        });
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
 
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public String getDuration() {return duration; }
 }
+
