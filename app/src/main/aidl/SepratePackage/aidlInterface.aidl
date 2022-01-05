@@ -13,10 +13,11 @@ interface aidlInterface {
 //   int PerformNextPlay();
 //   int notifysonginfo(String name);
        boolean playPauseSong();
-       void playSong(int position);
-       List<String> getAllAudio();
-       String getAlbum(int position);
-       String getArtist(int position);
-       List<String> getSongDetails(int position);
-       int getcposition();
+           void playSong(int position);
+            List<String> getAllAudio();
+            String getAlbum(int position);
+            String getArtist(int position);
+            List<String> getSongDetails(int position);
+            int getcposition();
+
 }

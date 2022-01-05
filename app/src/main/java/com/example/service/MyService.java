@@ -1,5 +1,6 @@
 package com.example.service;
 
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,13 +10,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
+
+import SepratePackage.aidlInterface;
+import android.media.MediaPlayer;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -23,8 +27,6 @@ import androidx.core.app.NotificationCompat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import SepratePackage.aidlInterface;
 
 
 public class MyService extends Service {
@@ -165,12 +167,12 @@ public class MyService extends Service {
         @Override
         public List<String> getSongDetails(int position) throws RemoteException {
             ArrayList<String> songDetails = new ArrayList<> ( musicFiles.size () );
-            songDetails.add ( musicFiles.get ( position ).getTitle () );
-            songDetails.add ( musicFiles.get ( position ).getAlbum () );
-            songDetails.add ( musicFiles.get ( position ).getArtist () );
-
-            songDetails.add ( String.valueOf ( musicFiles.size () ) );
-            songDetails.add ( String.valueOf ( mediaPlayer.getDuration () ) );
+            songDetails.add ( musicFiles.get ( position ).getTitle () );  //songDetails list index 0 - title
+            songDetails.add ( musicFiles.get ( position ).getAlbum () );  //songDetails list index 1 - album
+            songDetails.add ( musicFiles.get ( position ).getArtist () );  //songDetails list index 2 - artist
+            //songDetails.add(musicFiles.get(position).getPath());
+            songDetails.add ( String.valueOf ( musicFiles.size () ) );  //songDetails list index 3 - count of song files
+            songDetails.add ( String.valueOf ( mediaPlayer.getDuration () ) );  //songDetails list index 4 - duration of song
 
             String uri = musicFiles.get ( position ).getPath ();
             System.out.println ( "uri" + uri );
@@ -181,10 +183,11 @@ public class MyService extends Service {
             retriever.release ();
             if (art != null) {
                 String str = new String ( art );
-
-                songDetails.add ( str );
+                //System.out.println("byte converted to string  : " + str);
+                songDetails.add ( str ); //songDetails list index 5 - cover art byte type converted to string
             }
 
+            //songDetails.add(String.valueOf(musicFiles.size()));//songDetails list index 5
             System.out.println ( "file size " + musicFiles.size () );
             return songDetails;
         }
@@ -216,7 +219,7 @@ public class MyService extends Service {
                     String artist = cursor.getString ( 4 );
 
                     TrackInfo musicFiles = new TrackInfo ( path, title, artist, album, duration );
-
+                    // take log.e for check
                     Log.e ( "Path : " + path, "Album: " + album );
                     tempAudioList.add ( musicFiles );
                 }
