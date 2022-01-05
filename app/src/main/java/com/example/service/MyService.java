@@ -30,7 +30,7 @@ import SepratePackage.aidlInterface;
 public class MyService extends Service {
     public static final int REQUEST_CODE = 1;
     static MediaPlayer mediaPlayer;
-    static ArrayList<TrackInfo> musiclist;
+    static ArrayList<TrackInfo> musicFiles;
 
     public MyService() {
     }
@@ -78,35 +78,21 @@ public class MyService extends Service {
     aidlInterface.Stub iBinder = new aidlInterface.Stub () {
 
         @Override
-        public int PerformPreviousPlay() throws RemoteException {
-            return 0;
-        }
-
-        @Override
-        public int PerformCurrentPlay() throws RemoteException {
-            return 0;
-        }
-
-        @Override
-        public int PerformNextPlay() throws RemoteException {
-            return 0;
-        }
-
-        @Override
-        public int notifysonginfo(String name) throws RemoteException {
-            return 0;
-        }
-
-        @Override
         public boolean playPauseSong() throws RemoteException {
             boolean playPauseStatus;
             System.out.println ( "call reached to service " );
             if (mediaPlayer.isPlaying ()) {
+                //btn_play_pause.setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
                 mediaPlayer.pause ();
                 playPauseStatus = true;
+                System.out.println ( "Media player paused " + playPauseStatus );
+                //Toast.makeText(getApplicationContext(),"Media player paused",Toast.LENGTH_SHORT).show();
             } else {
+                //btn_play_pause.setBackgroundResource(R.drawable.ic_baseline_pause_24);
                 mediaPlayer.start ();
                 playPauseStatus = false;
+                System.out.println ( "Media player playing" + playPauseStatus );
+                //Toast.makeText(getApplicationContext(),"Media player playing",Toast.LENGTH_SHORT).show();
             }
             return playPauseStatus;
 
@@ -114,12 +100,13 @@ public class MyService extends Service {
 
         @Override
         public List<String> getAllAudio() throws RemoteException {
-            musiclist = getAllAudioFile ( getApplicationContext () );
-            System.out.println ( musiclist );
+            System.out.println ( "Entered int  to getAllAudio" );
+            musicFiles = getAllAudioFile ( getApplicationContext () );
+            System.out.println ( musicFiles );
 
-            ArrayList<String> songTitle = new ArrayList<> ( musiclist.size () );
-            for (int i = 0; i < musiclist.size (); i++) {
-                songTitle.add ( musiclist.get ( i ).getTitle () );
+            ArrayList<String> songTitle = new ArrayList<> ( musicFiles.size () );
+            for (int i = 0; i < musicFiles.size (); i++) {
+                songTitle.add ( musicFiles.get ( i ).getTitle () );
                 System.out.println ( songTitle );
             }
             return songTitle;
@@ -138,51 +125,59 @@ public class MyService extends Service {
 
         @Override
         public void playSong(int position) throws RemoteException {
+            System.out.println ( " playSong() - call reached to service,  position: " + position );
+            System.out.println ( " currently playing song " + musicFiles.get ( position ).getTitle () );
 
             if (mediaPlayer != null) {
                 mediaPlayer.stop ();
                 mediaPlayer.release ();
             }
 
-            String path = musiclist.get ( position ).getPath ();
+            String path = musicFiles.get ( position ).getPath ();
             mediaPlayer = new MediaPlayer ();
             try {
                 mediaPlayer.setDataSource ( path );
             } catch (IllegalArgumentException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace ();
             } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace ();
             } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace ();
             }
             try {
                 mediaPlayer.prepare ();
             } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace ();
             } catch (IOException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace ();
             }
             mediaPlayer.start ();
             if (mediaPlayer.isPlaying ()) {
-                Log.d (  "playing","Song Playing" );
+                System.out.println ( "playing" );
             }
         }
 
         @Override
         public List<String> getSongDetails(int position) throws RemoteException {
-            ArrayList<String> songDetails = new ArrayList<> ( musiclist.size () );
-            songDetails.add ( musiclist.get ( position ).getTitle () );
-            songDetails.add ( musiclist.get ( position ).getAlbum () );
-            songDetails.add ( musiclist.get ( position ).getArtist () );
+            ArrayList<String> songDetails = new ArrayList<> ( musicFiles.size () );
+            songDetails.add ( musicFiles.get ( position ).getTitle () );
+            songDetails.add ( musicFiles.get ( position ).getAlbum () );
+            songDetails.add ( musicFiles.get ( position ).getArtist () );
 
-            songDetails.add ( String.valueOf ( musiclist.size () ) );
+            songDetails.add ( String.valueOf ( musicFiles.size () ) );
             songDetails.add ( String.valueOf ( mediaPlayer.getDuration () ) );
 
-            String uri = musiclist.get ( position ).getPath ();
+            String uri = musicFiles.get ( position ).getPath ();
             System.out.println ( "uri" + uri );
             MediaMetadataRetriever retriever = new MediaMetadataRetriever ();
             retriever.setDataSource ( uri );
             byte[] art = retriever.getEmbeddedPicture ();
+            System.out.println ( "byte  : " + art );
             retriever.release ();
             if (art != null) {
                 String str = new String ( art );
@@ -190,17 +185,19 @@ public class MyService extends Service {
                 songDetails.add ( str );
             }
 
-
+            System.out.println ( "file size " + musicFiles.size () );
             return songDetails;
         }
 
         @Override
-        public int getcurrentposition() throws RemoteException {
+        public int getcposition() throws RemoteException {
+            System.out.println ( "getc position call reached to service " );
             return mediaPlayer.getCurrentPosition ();
         }
 
         public ArrayList<TrackInfo> getAllAudioFile(Context context) throws RemoteException {
-            ArrayList<TrackInfo> tempList = new ArrayList<> ();
+            System.out.println ( " getAllAudio() call reached to service " );
+            ArrayList<TrackInfo> tempAudioList = new ArrayList<> ();
             Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
             String[] projections = {
                     MediaStore.Audio.Media.ALBUM,
@@ -221,12 +218,12 @@ public class MyService extends Service {
                     TrackInfo musicFiles = new TrackInfo ( path, title, artist, album, duration );
 
                     Log.e ( "Path : " + path, "Album: " + album );
-                    tempList.add ( musicFiles );
+                    tempAudioList.add ( musicFiles );
                 }
                 cursor.close ();
             }
 
-            return tempList;
+            return tempAudioList;
 
         }
     };
