@@ -18,5 +18,5 @@ interface aidlInterface {
        String getAlbum(int position);
        String getArtist(int position);
        List<String> getSongDetails(int position);
-       int getcposition();
+       int getcurrentposition();
 }

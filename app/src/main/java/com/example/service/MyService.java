@@ -195,7 +195,7 @@ public class MyService extends Service {
         }
 
         @Override
-        public int getcposition() throws RemoteException {
+        public int getcurrentposition() throws RemoteException {
             return mediaPlayer.getCurrentPosition ();
         }
 
