@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.service">
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
 
 
     <application
@@ -13,22 +16,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Service">
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true">
 
-            <intent-filter>
-                <action android:name="connect_to_aidl_service"></action>
-            </intent-filter>
-        </service>
+        <service
+            android:name=".MediaService"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="dataSync"
+            tools:ignore="Instantiatable" />
 
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="com.example.service"/>
+                <action android:name="com.example.service.AIDL"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
